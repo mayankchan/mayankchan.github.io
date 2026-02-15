@@ -22,8 +22,8 @@ avatar_image: /img/1662647768080.png
 
 #-------------------------------
 # Contact links
-linkedln: "https://linkedln.com/#" # Add your linkedln handle
-github: "https://github.com/#"  # Add your github handle
+linkedln: "https://www.linkedin.com/in/mayankchandras/" # Add your linkedln handle
+github: "https://github.com/mayankchan"  # Add your github handle
 
 paginate: 6
 paginate_path: "/page/:num"
@@ -51,6 +51,7 @@ defaults:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
 
 
 
