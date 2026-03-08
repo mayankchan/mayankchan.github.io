@@ -548,8 +548,9 @@ Potential future enhancements include:
 * Adding automated evaluations to catch incorrect queries or edge cases  
 * Allowing the agent to ask clarification questions in more complex scenarios  
 
-This project provides a strong foundation for an AI-powered, self-serve analytics layer on top of ABC Grocery’s SQL data, with safety and correctness built in from the ground up.
+
 
 ___
+
 
 
