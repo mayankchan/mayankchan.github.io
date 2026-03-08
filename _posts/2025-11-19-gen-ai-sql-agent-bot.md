@@ -36,7 +36,7 @@ We achieve this by combining:
     - [SQL Toolkit and Tools](#agent-toolkit)
     - [System Prompt](#agent-prompt)
     - [Creating the Agent](#agent-create)
-- [05. Application & Examples](#agent-application)
+- [05. Agent User Interface](#agent-application)
 - [06. Growth & Next Steps](#growth-next-steps)
 
 ___
@@ -45,20 +45,13 @@ ___
 
 ### Context <a name="overview-context"></a>
 
-ABC Grocery holds rich customer and transaction data in a PostgreSQL database. Data Science and Analytics teams often ask questions such as:
-
-* *Which customers live furthest from the store on average?*  
-* *What is the average transaction value over a given period?*  
-* *How do spending patterns differ by gender or credit score?*  
-
-Answering questions like these typically requires writing SQL queries by hand, which can be a bottleneck for non-technical stakeholders.
-
 The goal of this project is to build an **AI SQL Agent** that can take a plain-English question and:
 
-1. Understand what is being asked  
-2. Design a query using good SQL practices  
-3. Execute it safely against the database  
-4. Return a concise natural-language summary  
+1. Provide end user an interface to chat with agent
+2. Understand what is being asked  
+3. Design a query using good SQL practices  
+4. Execute it safely against the database  
+5. Return a concise natural-language summary on user interface
 
 ### Actions <a name="overview-actions"></a>
 
@@ -68,7 +61,8 @@ We built an end-to-end SQL Agent that:
 * Exposes only the required schema and tables to the agent  
 * Uses a modern LLM (gpt-4.1) configured with a dedicated SQL system prompt  
 * Uses LangChain’s SQL tooling to inspect schemas and run queries  
-* Returns both the SQL results and a human-readable explanation  
+* Returns both the SQL results and a human-readable explanation
+* Utilizes Streamlit to provide frontend interface
 
 We also traced and inspected runs in LangSmith, validating that queries were; correct, efficient, and aligned with our design rules.
 
@@ -82,16 +76,6 @@ The final SQL Agent:
 * Demonstrated good practices (for example, handling transaction-level aggregation correctly)  
 
 In short, we now have a **self-serve analytics layer** on top of the SQL database, powered by an LLM, but kept safe and controlled through careful prompting and tooling.
-
-### Growth/Next Steps <a name="overview-growth"></a>
-
-Potential future enhancements include:
-
-* Exposing additional tables (for example, product metadata, campaign data)  
-* Adding a lightweight UI so non-technical users can chat with the agent  
-* Logging queries and responses for audit and learning  
-* Adding evaluation harnesses to automatically check query correctness  
-* Adding clarification loops when questions are ambiguous  
 
 ___
 
@@ -502,18 +486,29 @@ Given a user question, it can plan, call tools, and reason step by step toward a
 
 ___
 
-# 05. Application & Examples <a name="agent-application"></a>
+# 05. Agent User Interface <a name="agent-application"></a>
+
+
+For frontend, Streamlit will provide a lightweight interface for a user to ask a query
+
+```python
+st.title("Population Stats")
+st.subheader("What do you want to check? ")
+
+user_input = st.text_input("Enter your query", value = "On average which gender lives furthest from store?")
+```
 
 To send a query to the agent, we use LangChain’s *HumanMessage* format:
 
 ```python
 from langchain_core.messages import HumanMessage
 
-user_query = "On average, which gender lives furthest from store?"
-user_query = "What is the average transaction value in September 2020 for male customers who have a credit score above 0.5"
+if st.button("Submit"):
+    user_query = user_input
+    result = agent.invoke({"messages": [HumanMessage(content=user_query)]})
+    print(result["messages"][-1].content)
 
-result = agent.invoke({"messages": [HumanMessage(content=user_query)]})
-print(result["messages"][-1].content)
+    st.subheader(result["messages"][-1].content)
 ```
 
 Two example questions are seen below:
@@ -549,7 +544,6 @@ ___
 Potential future enhancements include:
 
 * Exposing additional tables and relationships as the data model grows  
-* Adding a light web UI so business users can ask questions without touching SQL  
 * Logging queries and answers for audit, training, and documentation  
 * Adding automated evaluations to catch incorrect queries or edge cases  
 * Allowing the agent to ask clarification questions in more complex scenarios  
@@ -557,3 +551,4 @@ Potential future enhancements include:
 This project provides a strong foundation for an AI-powered, self-serve analytics layer on top of ABC Grocery’s SQL data, with safety and correctness built in from the ground up.
 
 ___
+
