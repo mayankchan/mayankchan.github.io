@@ -489,7 +489,7 @@ ___
 # 05. Agent User Interface <a name="agent-application"></a>
 
 
-For frontend, Streamlit will provide a lightweight interface for a user to ask a query
+For frontend, Streamlit will provide a lightweight interface for a user to ask any query
 
 ```python
 st.title("Population Stats")
@@ -551,4 +551,5 @@ Potential future enhancements include:
 This project provides a strong foundation for an AI-powered, self-serve analytics layer on top of ABC Grocery’s SQL data, with safety and correctness built in from the ground up.
 
 ___
+
 
